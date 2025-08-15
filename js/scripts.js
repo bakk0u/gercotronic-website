@@ -258,7 +258,13 @@ window.addEventListener("load", () => {
   });
 
   // Helpers
-  const normalize = (href) => (href ? href.replace(/^\//, "") : "");
+  // Replace the old normalize with this:
+const normalize = (href) => {
+  if (!href) return "";
+  // remove leading "./" or "/" (one or many)
+  return href.replace(/^(?:\.\/|\/)+/, "");
+};
+
   const isInternalHTML = (href) => {
     if (!href) return false;
     if (
