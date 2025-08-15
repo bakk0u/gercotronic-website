@@ -1,0 +1,25 @@
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+env/
+venv/
+.pytest_cache/
+
+# Node / npm
+node_modules/
+dist/
+build/
+.cache/
+.npm/
+npm-debug.log*
+
+# Env / Secrets
+.env
+.env.*
