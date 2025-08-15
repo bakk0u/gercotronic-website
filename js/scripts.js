@@ -1,6 +1,11 @@
 // Simple in-memory page cache (path -> HTML string)
 const pageCache = new Map();
 const MAX_CACHE = 10; // keep it small + fast
+// Base path of the current folder (works on GitHub Pages subpaths)
+// Always point to the repo root (works locally and on GitHub Pages)
+const REPO = location.pathname.split("/")[1] || "";   // "gercotronic-website" on GH Pages, "" locally
+const BASE = REPO ? `/${REPO}/` : "/";                // "/gercotronic-website/" or "/"
+
 
 function cacheSet(path, html) {
   if (pageCache.has(path)) pageCache.delete(path); // refresh order
@@ -282,7 +287,7 @@ async function loadPage(href, push = true, { bypassCache = false } = {}) {
   navInFlight = true;
 
   const path = normalize(href);
-  const fetchURL = new URL(`/${path}`, window.location.origin).href;
+  const fetchURL = new URL(path, `${location.origin}${BASE}`).href;
 
   try {
     // ✅ Serve from cache if available
@@ -303,7 +308,8 @@ async function loadPage(href, push = true, { bypassCache = false } = {}) {
       mainSection.innerHTML = newMain.innerHTML;
 
       if (push) {
-        history.pushState({ html: newMain.innerHTML, href: path }, "", `/${path}`);
+        history.pushState({ html: newMain.innerHTML, href: path }, "", `${BASE}${path}`);
+
       }
 
       cleanupAnimations();
@@ -331,7 +337,7 @@ document.addEventListener("mouseover", async (e) => {
   const path = normalize(href);
   if (pageCache.has(path)) return; // already cached
 
-  const fetchURL = new URL(`/${path}`, window.location.origin).href;
+  const fetchURL = new URL(path, `${location.origin}${BASE}`).href;
   try {
     const res = await fetch(fetchURL, { cache: "no-cache" });
     if (res.ok) cacheSet(path, await res.text());
