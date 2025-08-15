@@ -3,9 +3,8 @@ const pageCache = new Map();
 const MAX_CACHE = 10; // keep it small + fast
 // Base path of the current folder (works on GitHub Pages subpaths)
 // Always point to the repo root (works locally and on GitHub Pages)
-const REPO = location.pathname.split("/")[1] || "";   // "gercotronic-website" on GH Pages, "" locally
-const BASE = REPO ? `/${REPO}/` : "/";                // "/gercotronic-website/" or "/"
-
+const REPO = "gercotronic-website";
+const BASE = location.hostname.endsWith("github.io") ? `/${REPO}/` : "/";
 
 function cacheSet(path, html) {
   if (pageCache.has(path)) pageCache.delete(path); // refresh order
@@ -259,12 +258,7 @@ window.addEventListener("load", () => {
 
   // Helpers
   // Replace the old normalize with this:
-const normalize = (href) => {
-  if (!href) return "";
-  // remove leading "./" or "/" (one or many)
-  return href.replace(/^(?:\.\/|\/)+/, "");
-};
-
+  const normalize = (href) => (href ? href.replace(/^(?:\.\/|\/)+/, "") : "");
   const isInternalHTML = (href) => {
     if (!href) return false;
     if (
