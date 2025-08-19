@@ -170,14 +170,24 @@ function runAnimations() {
     });
   }
   if (document.querySelector(".milestones")) {
-    gsap.from(".timeline .event", {
-      scrollTrigger: { trigger: ".milestones", start: "top 80%" },
-      opacity: 0,
-      x: -30,
-      stagger: 0.2,
-      duration: 1,
-    });
-  }
+  gsap.utils.toArray(".timeline .event").forEach((ev) => {
+    gsap.fromTo(
+      ev,
+      { x: -30, autoAlpha: 0 },      // autoAlpha = opacity + visibility
+      {
+        x: 0,
+        autoAlpha: 1,                // always ends fully opaque
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ev,
+          start: "top 95%",
+          toggleActions: "play none none none"
+        }
+      }
+    );
+  });
+}
   if (document.querySelector(".about-cta")) {
     gsap.from(".about-cta h2, .about-cta a", {
       scrollTrigger: { trigger: ".about-cta", start: "top 80%" },

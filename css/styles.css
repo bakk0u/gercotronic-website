@@ -963,6 +963,89 @@ img[src*="logo_gercotronic"] {
   background: #fff;
   color: #0b2a6d; /* dark text */
 }
+/* === ABOUT: Timeline layout + readability fix === */
+.about-page .milestones { /* keep the section */
+  /* nothing here; just scoping helpers below */
+}
+
+.about-page .timeline {
+  position: relative;
+  margin: 2.5rem auto;
+  max-width: 900px;
+  text-align: left;               /* override any center alignment */
+}
+
+.about-page .timeline::before {   /* vertical rail */
+  content: "";
+  position: absolute;
+  left: 24px;                     /* rail position */
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #2947ca;            /* brand-ish blue */
+  border-radius: 2px;
+}
+
+.about-page .timeline .event {
+  display: grid;
+  grid-template-columns: 48px 1fr;/* dot column + content */
+  column-gap: 16px;
+  align-items: start;
+  padding: 1rem 0;
+}
+
+.about-page .timeline .event::before { /* dot */
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #2947ca;
+  grid-column: 1;
+  justify-self: center;
+  align-self: start;
+  margin-top: .2rem;
+}
+
+.about-page .timeline .year {
+  grid-column: 2;
+  display: block;
+  margin: 0 0 .25rem 0;
+  font-weight: 700;
+  color: #0b2a6d;
+  text-align: left;
+}
+
+.about-page .timeline .event p {
+  grid-column: 2;
+  margin: 0;
+  color: #2f2f2f;                 /* stronger contrast */
+  opacity: 1;                     /* in case an animation left it faded */
+  text-align: left;
+}
+
+/* Keep the section title centered, but ensure it isn't too light */
+.about-page .milestones h2 {
+  text-align: center;
+  color: #0b2a6d;
+}
+/* ABOUT ▸ Milestones: match body text color */
+.about-page .milestones h2 {
+  color: #111;      /* section title */
+  opacity: 1;
+}
+
+/* ABOUT ▸ Milestones — force readable text */
+.about-page .milestones,
+.about-page .timeline,
+.about-page .timeline .event {
+  opacity: 1 !important;           /* defeat any parent fade */
+}
+
+.about-page .milestones h2,
+.about-page .timeline .year,
+.about-page .timeline .event p {
+  color: #111 !important;          /* match your other black text */
+}
 
 
 
