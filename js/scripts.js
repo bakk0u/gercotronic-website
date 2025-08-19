@@ -250,6 +250,13 @@ function runVantaEffect() {
 window.addEventListener("load", () => {
   const mainSection = document.getElementById("main-content");
 
+    // Handle GitHub Pages SPA redirect pattern from 404.html:  /?/<path>
+  if (location.search.startsWith("?/")) {
+    const redirectedPath = decodeURIComponent(location.search.slice(2).split(/[&]/)[0]); // "pages/xxx.html"
+    history.replaceState(null, "", `${BASE}${redirectedPath}${location.hash || ""}`);
+  }
+
+
   // -------- helpers --------
   const normalize = (href) => {
     if (!href) return "";
