@@ -1,6 +1,9 @@
+// ==============================
 // Simple in-memory page cache (path -> HTML string)
+// ==============================
 const pageCache = new Map();
 const MAX_CACHE = 10; // keep it small + fast
+
 // Base path of the current folder (works on GitHub Pages subpaths)
 // Always point to the repo root (works locally and on GitHub Pages)
 const REPO = "gercotronic-website";
@@ -98,7 +101,7 @@ function runAnimations() {
     });
   }
 
-  // Services page: robust per-card reveal (fixes "only first one stays")
+  // Services page: robust per-card reveal
   if (document.querySelector(".services-grid")) {
     gsap.utils.toArray(".service-card").forEach((card, i) => {
       gsap.fromTo(
@@ -245,20 +248,20 @@ function runVantaEffect() {
 // SPA Router (Event Delegation + History)
 // ==============================
 window.addEventListener("load", () => {
-  const toggleBtn = document.getElementById("theme-toggle");
   const mainSection = document.getElementById("main-content");
 
-  // Theme toggle
-  toggleBtn?.addEventListener("click", () => {
-    document.body.classList.toggle("light-mode");
-    toggleBtn.textContent = document.body.classList.contains("light-mode")
-      ? "🌙 Dark Mode"
-      : "☀️ Light Mode";
-  });
+  // -------- helpers --------
+  const normalize = (href) => {
+    if (!href) return "";
+    // strip origin if present
+    let h = href.replace(location.origin, "");
+    // strip BASE prefix when running on GitHub Pages
+    if (h.startsWith(BASE)) h = h.slice(BASE.length);
+    // remove leading ./ or / and strip any query/hash
+    h = h.replace(/^(?:\.\/|\/)+/, "").split(/[?#]/)[0];
+    return h;
+  };
 
-  // Helpers
-  // Replace the old normalize with this:
-  const normalize = (href) => (href ? href.replace(/^(?:\.\/|\/)+/, "") : "");
   const isInternalHTML = (href) => {
     if (!href) return false;
     if (
@@ -266,8 +269,9 @@ window.addEventListener("load", () => {
       href.startsWith("mailto:") ||
       href.startsWith("tel:") ||
       href.startsWith("#")
-    )
+    ) {
       return false;
+    }
     const h = normalize(href);
     return h.startsWith("pages/") || h.endsWith(".html");
   };
@@ -282,69 +286,73 @@ window.addEventListener("load", () => {
 
   let navInFlight = false;
 
-async function loadPage(href, push = true, { bypassCache = false } = {}) {
-  if (navInFlight) return;
-  navInFlight = true;
+  async function loadPage(href, push = true, { bypassCache = false } = {}) {
+    if (navInFlight) return;
+    navInFlight = true;
 
-  const path = normalize(href);
-  const fetchURL = new URL(path, `${location.origin}${BASE}`).href;
+    const path = normalize(href);
+    const fetchURL = new URL(path, `${location.origin}${BASE}`).href;
 
-  try {
-    // ✅ Serve from cache if available
-    let html;
-    if (!bypassCache && pageCache.has(path)) {
-      html = pageCache.get(path);
-    } else {
-      const res = await fetch(fetchURL, { cache: "no-cache" });
-      if (!res.ok) throw new Error(`Page not found: ${path}`);
-      html = await res.text();
-      cacheSet(path, html);
-    }
-
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    const newMain = doc.querySelector(".page-wrapper") || doc.querySelector("section");
-
-    if (newMain) {
-      mainSection.innerHTML = newMain.innerHTML;
-
-      if (push) {
-        history.pushState({ html: newMain.innerHTML, href: path }, "", `${BASE}${path}`);
-
+    try {
+      // ✅ Serve from cache if available
+      let html;
+      if (!bypassCache && pageCache.has(path)) {
+        html = pageCache.get(path);
+      } else {
+        const res = await fetch(fetchURL, { cache: "no-cache" });
+        if (!res.ok) throw new Error(`Page not found: ${path}`);
+        html = await res.text();
+        cacheSet(path, html);
       }
 
-      cleanupAnimations();
-      runAnimations();
-      runVantaEffect();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      setActiveLink(path);
-      if (window.ScrollTrigger) setTimeout(() => ScrollTrigger.refresh(), 100);
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const newMain = doc.querySelector(".page-wrapper") || doc.querySelector("section");
+
+      if (newMain) {
+        mainSection.innerHTML = newMain.innerHTML;
+
+        // 🔤 Re-run translations on injected content
+        if (window.translatePage) window.translatePage(mainSection);
+
+        if (push) {
+          history.pushState({ html: newMain.innerHTML, href: path }, "", `${BASE}${path}`);
+        }
+
+        cleanupAnimations();
+        runAnimations();
+        runVantaEffect();
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        setActiveLink(path);
+
+        if (window.ScrollTrigger) setTimeout(() => ScrollTrigger.refresh(), 100);
+      }
+    } catch (err) {
+      console.error(err);
+      mainSection.innerHTML = "<p>Sorry, this page failed to load.</p>";
+    } finally {
+      navInFlight = false;
     }
-  } catch (err) {
-    console.error(err);
-    mainSection.innerHTML = "<p>Sorry, this page failed to load.</p>";
-  } finally {
-    navInFlight = false;
   }
-}
 
-// Prefetch internal pages on hover for instant navigation
-document.addEventListener("mouseover", async (e) => {
-  const a = e.target.closest("a");
-  if (!a) return;
-  const href = a.getAttribute("href");
-  if (!isInternalHTML(href)) return;
+  // Prefetch internal pages on hover for instant navigation
+  document.addEventListener("mouseover", async (e) => {
+    const a = e.target.closest("a");
+    if (!a) return;
+    const href = a.getAttribute("href");
+    if (!isInternalHTML(href)) return;
 
-  const path = normalize(href);
-  if (pageCache.has(path)) return; // already cached
+    const path = normalize(href);
+    if (pageCache.has(path)) return; // already cached
 
-  const fetchURL = new URL(path, `${location.origin}${BASE}`).href;
-  try {
-    const res = await fetch(fetchURL, { cache: "no-cache" });
-    if (res.ok) cacheSet(path, await res.text());
-  } catch (_) { /* ignore prefetch errors */ }
-});
-
-
+    const fetchURL = new URL(path, `${location.origin}${BASE}`).href;
+    try {
+      const res = await fetch(fetchURL, { cache: "no-cache" });
+      if (res.ok) cacheSet(path, await res.text());
+    } catch (_) {
+      /* ignore prefetch errors */
+    }
+  });
 
   // Event delegation: intercept ALL internal links (header, footer, body)
   document.addEventListener("click", (e) => {
@@ -372,6 +380,6 @@ document.addEventListener("mouseover", async (e) => {
   if (!initialPath || initialPath === "index.html") {
     loadPage("pages/home.html", false); // default to home
   } else if (isInternalHTML(initialPath)) {
-    loadPage(initialPath, false);       // deep link support
+    loadPage(initialPath, false); // deep link support
   }
 });

@@ -1,0 +1,80 @@
+{
+  "nav.home": "Home",
+  "nav.products": "Products",
+  "nav.services": "Services",
+  "nav.about": "About Us",
+  "nav.contact": "Contact",
+  "nav.projects": "Projects",
+
+  "footer.brand": "GerCotronic",
+  "footer.tagline": "Leading provider of optical fiber solutions for businesses and telecommunications.",
+  "footer.quickLinks": "Quick Links",
+  "footer.services": "Services",
+  "footer.contact": "Contact",
+
+  "services.fiberInstallation": "Fiber Installation",
+  "services.networkDesign": "Network Design",
+  "services.maintenance": "Maintenance",
+  "services.consulting": "Consulting",
+
+  "footer.copyright": "© 2025 GerCotronic. All rights reserved.",
+  "home.hero.title": "Advanced Optical Fiber Solutions",
+  "home.hero.subtitle": "Connecting the world with high-speed, reliable fiber optic technology.",
+  "home.hero.ctaProducts": "Our Products",
+  "home.hero.ctaContact": "Contact Us",
+
+  "home.services.title": "Our Services",
+
+  "services.fiberInstallation": "Fiber Installation",
+  "services.fiberInstallation.desc": "Professional installation of optical fiber networks.",
+  "services.networkDesign": "Network Design",
+  "services.networkDesign.desc": "Custom design solutions for your specific needs.",
+  "services.maintenance": "Maintenance",
+  "services.maintenance.desc": "Ongoing support and maintenance services.",
+
+  "why.title": "Why Choose Our Fiber Technology",
+  "why.speed": "High-Speed Data Transfer",
+  "why.speed.desc": "Unmatched speed for all your data transmission needs.",
+  "why.reliability": "Reliability",
+  "why.reliability.desc": "99.9% uptime guarantee with our robust systems.",
+  "why.cost": "Cost Effective",
+  "why.cost.desc": "Long-term savings with energy efficient technology.",
+  "why.futureProof": "Future-Proof",
+  "why.futureProof.desc": "Scalable solutions that grow with your business.",
+
+  "trusted.title": "Trusted by Industry Leaders",
+
+  "cta.title": "Ready to Upgrade Your Network Infrastructure?",
+  "cta.subtitle": "Our team of experts is ready to help you design and implement the perfect optical fiber solution for your needs.",
+  "cta.button": "Get a Free Consultation",
+  "about.hero.title": "Who We Are",
+  "about.hero.subtitle": "Empowering digital infrastructure across Europe through fiber technology",
+
+  "about.details.mission.title": "Our Mission",
+  "about.details.mission.body": "To accelerate Europe's digital transformation through scalable, efficient, and secure fiber optic solutions — built by experts, powered by innovation.",
+  "about.details.vision.title": "Our Vision",
+  "about.details.vision.body": "A continent where every business and municipality is connected with blazing speed, zero downtime, and future-proof infrastructure.",
+
+  "about.milestones.title": "Milestones",
+  "about.milestones.2021": "Gercotronic GmbH founded in Düsseldorf",
+  "about.milestones.2023": "Completed 150+ km of fiber installation across 3 cities",
+  "about.milestones.2025": "Expanded to EU-wide public infrastructure contracts",
+
+  "about.cta.title": "Let’s Build the Future of Fiber Together",
+  "about.cta.button": "Contact Our Team",
+  "services.page.title": "Our Services",
+
+  "services.consulting.title": "Consulting",
+  "services.consulting.desc": "We provide expert advice to help your business evolve with technology.",
+
+  "services.development.title": "Development",
+  "services.development.desc": "Custom software and application development tailored to your needs.",
+
+  "services.support.title": "Support & Maintenance",
+  "services.support.desc": "Reliable ongoing support to keep your systems up and running.",
+  "home.hero.subtitle.line1": "Connecting the world with high-speed,",
+  "home.hero.subtitle.line2": "reliable fiber optic technology"
+
+
+}
+

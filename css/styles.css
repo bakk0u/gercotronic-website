@@ -917,6 +917,52 @@ footer a:hover {
   }
 }
 
+/* Force the blue PNG logo to WHITE on any background */
+#brand-logo,
+img[alt*="Gercotronic" i],
+img[src*="logo_gercotronic"] {
+  height: 40px;              /* adjust as you like */
+  width: auto;
+  display: block;
+
+  /* Make any colored pixels pure white */
+  filter: grayscale(1) brightness(0) invert(1);
+  mix-blend-mode: normal !important; /* avoid blending that tints the logo */
+}
+
+/* Optional: if you change size in mobile header */
+@media (max-width: 640px) {
+  #brand-logo,
+  img[alt*="Gercotronic" i],
+  img[src*="logo_gercotronic"] {
+    height: 32px;
+  }
+}
+/* Language selector (in header) */
+.lang-select{
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
+  padding: .5rem .75rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1;
+  position: relative;
+  z-index: 10;
+}
+.lang-select:focus { outline: 2px solid rgba(255,255,255,.45); outline-offset: 2px; }
+
+/* Make the blue PNG logo white */
+#brand-logo { height: 40px; width: auto; display: block;
+  filter: grayscale(1) brightness(0) invert(1); }
+@media (max-width: 640px){ #brand-logo { height: 32px; } }
+/* Make the dropdown list readable across browsers */
+.lang-select option{
+  background: #fff;
+  color: #0b2a6d; /* dark text */
+}
 
 
 
